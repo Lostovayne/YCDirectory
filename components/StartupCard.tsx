@@ -7,10 +7,9 @@ import { Button } from './ui/button';
 
 interface StartupCardProps {
 	post: StartupTypeCard;
-	key: string;
 }
 
-const StartupCard: FC<StartupCardProps> = ({ post, key }: StartupCardProps): ReactElement => {
+const StartupCard: FC<StartupCardProps> = ({ post }: StartupCardProps): ReactElement => {
 	const {
 		_createdAt,
 		views,

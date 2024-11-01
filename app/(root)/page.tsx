@@ -39,16 +39,14 @@ export default async function Home({
 			<section className='section_container'>
 				<p className='text-30-semibold'>{query ? `Search Results for "${query}"` : `All Startups`}</p>
 				<ul className='mt-7 card-grid'>
-					{posts?.length > 0 ? (
+					{posts?.length > 0 ?
 						posts.map((post: StartupCardType, index: number) => (
 							<StartupCard
-								key={post?._id}
+								key={index} //post?._id
 								post={post}
 							/>
 						))
-					) : (
-						<p className='no-results'>No Startups Found </p>
-					)}
+					:	<p className='no-results'>No Startups Found </p>}
 				</ul>
 			</section>
 		</>
