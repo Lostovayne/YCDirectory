@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { STARTUP_BY_ID_QUERY } from "@/lib/queries";
 import { formDate } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
