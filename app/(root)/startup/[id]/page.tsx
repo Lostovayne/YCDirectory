@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+import { Skeleton } from "@/components/ui/skeleton";
+import View from "@/components/View";
 import { STARTUP_BY_ID_QUERY } from "@/lib/queries";
 import { formDate } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
@@ -6,7 +8,7 @@ import markdownit from "markdown-it";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, Suspense } from "react";
 
 export const experimental_ppr = true;
 
@@ -75,6 +77,10 @@ const StartupPage: FC<StartupPageProps> = async ({ params }): Promise<ReactEleme
         <hr className="divider" />
 
         {/* Editor selected startup */}
+
+        <Suspense fallback={<Skeleton className="view_skeleton" />}>
+          <View id={id} />
+        </Suspense>
       </section>
     </>
   );
