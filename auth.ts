@@ -8,7 +8,7 @@ const authConfig: NextAuthConfig = {
   providers: [GitHub],
   callbacks: {
     async signIn({ user: { name, email, image }, profile }) {
-      const existingUser = await client.fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
+      const existingUser = await client.withConfig({ useCdn: false }).fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
         id: profile?.id,
       });
 
@@ -27,7 +27,7 @@ const authConfig: NextAuthConfig = {
     },
     async jwt({ token, account, profile }) {
       if (account && profile) {
-        const user = await client.fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
+        const user = await client.withConfig({ useCdn: false }).fetch(AUTHOR_BY_GITHUB_ID_QUERY, {
           id: profile?.id,
         });
         token.id = user?._id;
