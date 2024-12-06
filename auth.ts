@@ -1,8 +1,19 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
+import NextAuth, { NextAuthConfig, type Session } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { client } from "./sanity/lib/client";
 import { AUTHOR_BY_GITHUB_ID_QUERY } from "./sanity/lib/queries";
 import { writeClient } from "./sanity/lib/write-client";
+
+declare module "next-auth" {
+  interface Session {
+    id: string;
+    user: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+}
 
 const authConfig: NextAuthConfig = {
   providers: [GitHub],
@@ -38,7 +49,7 @@ const authConfig: NextAuthConfig = {
     },
     async session({ session, token }) {
       Object.assign(session, { id: token.id });
-      return session;
+      return session as Session;
     },
   },
 };

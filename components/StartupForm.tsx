@@ -1,6 +1,7 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
+import { createPitch } from "@/lib/actions";
 import { formSchema } from "@/lib/validations";
 import MDEditor from "@uiw/react-md-editor";
 import { Send } from "lucide-react";
@@ -30,19 +31,27 @@ const StartupForm = ({}) => {
       };
 
       await formSchema.parseAsync(formValues);
-      console.log(formValues);
-      //   const result = await createIdea(prevSatte,formData,pitch)
-      //   console.log((result))
 
-      //   if (result.status === "SUCCESS") {
-      //     toast({
-      //       title: "Success",
-      //       description: "Form submitted successfully",
-      //       className: "bg-green-500 text-white",
-      //     });
-      //     router.push(`/startup/${result.id}`);
-      //   }
-      //   return result;
+      const result = await createPitch(prevState, formData, pitch);
+      console.log(result);
+
+      if (result.status === "SUCCESS" && result.data) {
+        toast({
+          title: "Success",
+          description: "Startup submitted successfully!",
+          className: "bg-green-500 text-white",
+        });
+        router.push(`/startup/${result.data._id}`);
+      } else if (result.status === "ERROR") {
+        toast({
+          title: "Error",
+          description: result.error || "Something went wrong",
+          variant: "destructive",
+          className: "bg-red-500 text-white",
+        });
+      }
+
+      return result;
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
