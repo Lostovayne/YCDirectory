@@ -3,7 +3,7 @@
 import { useToast } from "@/hooks/use-toast";
 import { createPitch } from "@/lib/actions";
 import { formSchema } from "@/lib/validations";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
 import { Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
@@ -11,6 +11,11 @@ import { z } from "zod";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+
+const MDEditor = dynamic(
+  () => import("@uiw/react-md-editor").then((mod) => mod.default),
+  { ssr: false }
+);
 
 const StartupForm = ({}) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -33,7 +38,6 @@ const StartupForm = ({}) => {
       await formSchema.parseAsync(formValues);
 
       const result = await createPitch(prevState, formData, pitch);
-      console.log(result);
 
       if (result.status === "SUCCESS" && result.data) {
         toast({
@@ -83,7 +87,7 @@ const StartupForm = ({}) => {
     }
   };
 
-  const [state, formAction, isPending] = useActionState(handleFormSubmit, {
+  const [_state, formAction, isPending] = useActionState(handleFormSubmit, {
     error: "",
     status: "INITIAL",
   });
@@ -97,14 +101,7 @@ const StartupForm = ({}) => {
         <label htmlFor="title" className="startup-form_label">
           Title
         </label>
-        <Input
-          type="text"
-          name="title"
-          id="title"
-          className="startup-form_input"
-          required
-          placeholder="Startup Title"
-        />
+        <Input type="text" name="title" id="title" className="startup-form_input" required placeholder="Startup Title" />
 
         {errors.title && <p className="startup-form_error">{errors.title}</p>}
       </div>
@@ -144,14 +141,7 @@ const StartupForm = ({}) => {
         <label htmlFor="link" className="startup-form_label">
           Image URL
         </label>
-        <Input
-          type="text"
-          name="link"
-          id="link"
-          className="startup-form_input"
-          required
-          placeholder="Startup Image URL"
-        />
+        <Input type="text" name="link" id="link" className="startup-form_input" required placeholder="Startup Image URL" />
 
         {errors.link && <p className="startup-form_error">{errors.link}</p>}
       </div>
@@ -160,18 +150,20 @@ const StartupForm = ({}) => {
         <label htmlFor="pitch" className="startup-form_label">
           Pitch
         </label>
-        <MDEditor
-          value={pitch}
-          onChange={(value) => setPitch(value as string)}
-          id="pitch"
-          preview="edit"
-          height={300}
-          style={{ borderRadius: 20, overflow: "hidden" }}
-          textareaProps={{ placeholder: "Briefly describe your idea and what problem it solves." }}
-          previewOptions={{
-            disallowedElements: ["style"],
-          }}
-        />
+        {isLoading && (
+          <MDEditor
+            value={pitch}
+            onChange={(value) => setPitch(value as string)}
+            id="pitch"
+            preview="edit"
+            height={300}
+            style={{ borderRadius: 20, overflow: "hidden" }}
+            textareaProps={{ placeholder: "Briefly describe your idea and what problem it solves." }}
+            previewOptions={{
+              disallowedElements: ["style"],
+            }}
+          />
+        )}
         {errors.link && <p className="startup-form_error">{errors.link}</p>}
       </div>
 

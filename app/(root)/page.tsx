@@ -21,7 +21,7 @@ export default async function Home({
   const params = { search: query || null };
 
   const session = await auth();
-  console.log({ session: session?.id });
+  console.log(session?.id);
 
   const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params });
 
@@ -31,16 +31,12 @@ export default async function Home({
         <h1 className="heading">
           Pitch Your Startup, <br /> Connect With Entrepreneurs
         </h1>
-        <p className="sub-heading !max-w-3xl">
-          Submit Ideas, Vote on Pitches, and Get Noticed in Virtual Competitions.
-        </p>
+        <p className="sub-heading !max-w-3xl">Submit Ideas, Vote on Pitches, and Get Noticed in Virtual Competitions.</p>
         <SearchForm query={query} />
       </section>
 
       <section className="section_container">
-        <p className="text-30-semibold">
-          {query ? `Search Results for "${query}"` : `All Startups`}
-        </p>
+        <p className="text-30-semibold">{query ? `Search Results for "${query}"` : `All Startups`}</p>
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ?
             posts.map((post: StartupTypeCard) => <StartupCard key={post?._id} post={post} />)

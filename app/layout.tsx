@@ -67,10 +67,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="hydrated">
       <body className={workSans.variable}>
         {children}
-
         <Toaster />
       </body>
     </html>
