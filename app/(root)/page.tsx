@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
 import SearchForm from "@/components/SearchForm";
 import StartupCard, { type StartupTypeCard } from "@/components/StartupCard";
-import { STARTUPS_QUERY } from "@/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import React from "react";
 
 export default async function Home({
@@ -38,7 +38,9 @@ export default async function Home({
       </section>
 
       <section className="section_container">
-        <p className="text-30-semibold">{query ? `Search Results for "${query}"` : `All Startups`}</p>
+        <p className="text-30-semibold">
+          {query ? `Search Results for "${query}"` : `All Startups`}
+        </p>
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ?
             posts.map((post: StartupTypeCard) => <StartupCard key={post?._id} post={post} />)

@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { Skeleton } from "@/components/ui/skeleton";
 import View from "@/components/View";
-import { STARTUP_BY_ID_QUERY } from "@/lib/queries";
 import { formDate } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
+import { STARTUP_BY_ID_QUERY } from "@/sanity/lib/queries";
 import markdownit from "markdown-it";
 import Image from "next/image";
 import Link from "next/link";
